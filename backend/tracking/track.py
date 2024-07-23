@@ -29,9 +29,11 @@ from typing import Callable, Generator, Optional, Tuple, Iterable
 # from yolox.utils.visualize import plot_tracking
 
 # from tracker.tracking_utils.timer import Timer
-from Impr_Assoc_Track.Impr_Assoc_Track import ImprAssocTrack
+# from Impr_Assoc_Track.Impr_Assoc_Track import ImprAssocTrack
 from ConfTrack.ConfTrack import ConfTrack
 from supervision import ByteTrack
+
+from boxmot import ImprAssocTrack
 # import super_gradients as sg
 
 from ultralytics import YOLO, NAS
@@ -359,28 +361,27 @@ if __name__ == "__main__":
 # Initialize the object tracker based on the specified tracker type
   if OBJECT_TRACKER == "Impr_Assoc":
     if args.default_parameters:
-      Tracker = ImprAssocTrack(with_reid=args.with_reid,
-                              fast_reid_config=args.fast_reid_config,
-                              fast_reid_weights=args.fast_reid_weights,
+      Tracker = ImprAssocTrack(model_weights=args.fast_reigh_weights,
                               device=args.device,
+                              with_reid=args.with_reid,
                               frame_rate=video_info.fps
                               )
     else:
-      Tracker = ImprAssocTrack(track_high_thresh=args.track_high_thresh,
-                                      track_low_thresh=args.track_low_thresh,
-                                      new_track_thresh=args.new_track_thresh,
-                                      track_buffer=args.track_buffer,
-                                      match_thresh=args.match_thresh,
-                                      second_match_thresh=args.second_match_thresh,
-                                      overlap_thresh=args.overlap_thresh,
-                                      iou_weight=args.iou_weight,
-                                      proximity_thresh=args.proximity_thresh,
-                                      appearance_thresh=args.appearance_thresh,
-                                      with_reid=args.with_reid,
-                                      fast_reid_config=args.fast_reid_config,
-                                      fast_reid_weights=args.fast_reid_weights,
-                                      device=args.device,
-                                      frame_rate=video_info.fps)
+      Tracker = ImprAssocTrack(model_weights=args.fast_reigh_weights,
+                              device=args.device,
+                              with_reid=args.with_reid,
+                              frame_rate=video_info.fps,
+                              track_high_thresh=args.track_high_thresh,
+                              track_low_thresh=args.track_low_thresh,
+                              new_track_thresh=args.new_track_thresh,
+                              track_buffer=args.track_buffer,
+                              match_thresh=args.match_thresh,
+                              second_match_thresh=args.second_match_thresh,
+                              overlap_thresh=args.overlap_thresh,
+                              lambda_=args.iou_weight,
+                              proximity_thresh=args.proximity_thresh,
+                              appearance_thresh=args.appearance_thresh
+                              )
   elif OBJECT_TRACKER == "ConfTrack":
     if args.default_parameters:
       print(f"with reid {args.with_reid}")
@@ -622,6 +623,17 @@ if __name__ == "__main__":
     # commented one for impr_associated
     if OBJECT_TRACKER == "BYTETrack":
       detections = Tracker.update_with_detections(detections)
+    elif OBJECT_TRACKER == "Impr_Assoc":
+        dets = np.empty_like([len(detections), 6])
+        dets[:, :4] = detections.xyxy
+        dets[:, 4] = detections.confidence
+        dets[:, 5] = detections.class_id
+        tracks = Tracker.update(dets, frame_cpu)
+        detections = sv.Detections.empty()
+        detections.xyxy = tracks[:, :4]
+        detections.tracker_id = tracks[:, 4].astype(int)
+        detections.confidence = tracks[:, 5].astype(float)
+        detections.class_id = tracks[:, 6].astype(int)
     else:
       detections = Tracker.update_with_detections(detections, frame_cpu)
     # detections = impr_assoc_tracker.update_with_detections(detections)
