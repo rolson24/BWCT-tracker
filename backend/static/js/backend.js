@@ -176,14 +176,11 @@ $(document).ready(function () {
 
         // Make an AJAX request to get the counts data
         fetch('/get_counts')
-            .then(response => {
-                response.json()
-                // console.log(response.message)
-            })
+            .then(response => response.json())
             // Inside the fetch success callback
             .then(data => {
                 // Parse the counts data into an array of objects
-                countsData = data.countsData;
+                var countsData = data.countsData;
                 var currentLine = 0;
                 var avgFPS;
                 video_name = data.filename
@@ -234,18 +231,22 @@ $(document).ready(function () {
                     row.appendChild(cell);
                     tableBody.appendChild(row);
                 }
-                $('#download-raw-data-button').show(); // Show the "Download Raw Data" button
-                $('#download-lines-button').show();  // Show the "Download Line Crossings" button
-                $('#download-counts-button').show();  // Show the "Download Counts Output" button
-                $('#download-processed-video-button').show();  // Show the "Download Processed Video" button
-                $('#download-plots-button').show();  // Show the "Download Processed Video" button
+                // $('#download-raw-data-button').show(); // Show the "Download Raw Data" button
+                // $('#download-lines-button').show();  // Show the "Download Line Crossings" button
+                // $('#download-counts-button').show();  // Show the "Download Counts Output" button
+                // $('#download-processed-video-button').show();  // Show the "Download Processed Video" button
+                // $('#download-plots-button').show();  // Show the "Download Processed Video" button
 
             })
             .catch(error => {
                 console.error('Error fetching counts data:', error);
             });
         console.log('get crossings data');
-
+        $('#download-raw-data-button').show(); // Show the "Download Raw Data" button
+        $('#download-lines-button').show();  // Show the "Download Line Crossings" button
+        $('#download-counts-button').show();  // Show the "Download Counts Output" button
+        $('#download-processed-video-button').show();  // Show the "Download Processed Video" button
+        $('#download-plots-button').show();  // Show the "Download Processed Video" button
         var videoFPS = 30;  // Set the video FPS to 30
         fetch('/get_crossings_data', {
             method: 'POST',
