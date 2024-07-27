@@ -45,11 +45,13 @@ window.addEventListener('beforeunload', beforeUnloadListener);
 
 var drawing = false;
 
-$(document).ready(function () {
+$(window).on('load', function () {
+    console.log("Document ready")
+
     // Load state and plot data from local storage
-    loadStateFromLocalStorage(document);
+    // setTimeout(() => loadStateFromLocalStorage(), 100);
     var countsData = loadCountsDataFromLocalStorage();
-    renderCountsTable(countsData, document);
+    renderCountsTable(countsData);
     var countsPlotData = loadPlotDataFromLocalStorage('countsPlotData');
     renderPlot(countsPlotData, 'counts-plot', 'counts_by_line');
     var crossingsPlotData = loadPlotDataFromLocalStorage('crossingsPlotData');
@@ -67,7 +69,7 @@ $(document).ready(function () {
     checkAndReloadVideoPlayer(document.getElementById('video-player'));
 
     // Load the labels state when the page is ready
-    loadLabelsState(document);
+    loadLabelsState(document, labels);
 
     // Load the canvas state when the page is ready
     loadCanvasState(document.getElementById('canvas'));
@@ -76,6 +78,8 @@ $(document).ready(function () {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings('.custom-file-label').addClass("selected").html(fileName);
     });
+
+    console.log("Start handling buttons")
 
     handleImportVideoButton();
 

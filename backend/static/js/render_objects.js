@@ -18,7 +18,8 @@ window.drawArrow = function drawArrow(ctx, fromx, fromy, tox, toy, arrowWidth, c
 
 
 // Function to render the counts data into the table
-window.renderCountsTable = function renderCountsTable(countsData, document) {
+window.renderCountsTable = function renderCountsTable(countsData) {
+    var document = window.document;
     var tableBody = document.getElementById('counts-display').querySelector('tbody');
     tableBody.innerHTML = ''; // Clear the table body
     if (countsData) {

@@ -196,6 +196,7 @@ def process_video(
         ```
     """
     source_video_info = VideoInfo.from_video_path(video_path=source_path)
+    print(f"Save video: {save_video}")
     if save_video:
       with VideoSink(target_path=target_path, video_info=source_video_info, codec=codec) as sink:
           for index, frame in enumerate(

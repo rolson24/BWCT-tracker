@@ -13,13 +13,13 @@ window.saveStateToLocalStorage = function saveStateToLocalStorage(document, proc
 }
 
 // Function to load the state from local storage
-window.loadStateFromLocalStorage = function loadStateFromLocalStorage(document) {
+window.loadStateFromLocalStorage = function loadStateFromLocalStorage() {
     var state = JSON.parse(localStorage.getItem('appState'));
     if (state) {
         processing = state.processing;
         // lineStart = state.lineStart;
-        document.getElementById('video-player').attr('src', state.videoPath);
-        document.getElementById('save-video').val(state.saveVideoOption);
+        window.document.getElementById('video-player').attr('src', state.videoPath);
+        window.document.getElementById('save-video').val(state.saveVideoOption);
         // Restore other parts of the state here
         // Update the UI to reflect the restored state
         console.log(`video src loaded: ${state.videoPath}`)
@@ -105,30 +105,30 @@ window.saveLabelsState = function saveLabelsState(labels) {
 }
 
 // Function to load the labels state from local storage and recreate labels
-window.loadLabelsState = function loadLabelsState(document) {
+window.loadLabelsState = function loadLabelsState(document, labels) {
     var labelsState = JSON.parse(localStorage.getItem('labelsState'));
     var inLabelsState = JSON.parse(localStorage.getItem('inLabelsState'));
     var outLabelsState = JSON.parse(localStorage.getItem('outLabelsState'));
     if (labelsState) {                                                               
         var videoContainer = document.querySelector('.video-container');             
         labelsState.forEach(function(labelState) {
-        createLabel(labelState, "Line", document)
+        createLabel(labelState, "Line", document, labels)
         });
     }                                                                
     if (inLabelsState) {                                                             
         inLabelsState.forEach(function(labelState) {                                 
-            createLabel(labelState, "In", document);                                           
+            createLabel(labelState, "In", document, labels);                                           
         });                                                                          
     }                                                                                
     if (outLabelsState) {                                                            
         outLabelsState.forEach(function(labelState) {                                
-            createLabel(labelState, "Out", document);                                          
+            createLabel(labelState, "Out", document, labels);                                          
         });                                                                          
     } 
 }
 
 // Helper function to create a label                                                 
-function createLabel(labelState, type, document) {                                             
+function createLabel(labelState, type, document, labels) {                                             
     videoContainer = document.querySelector('.video-container');                 
     var label = document.createElement('span');                                      
     label.textContent = labelState.text;                                             

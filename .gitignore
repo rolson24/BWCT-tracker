@@ -1,14 +1,18 @@
-node_modules
-*.mp4
+
 backend/tracking/__pycache__/*
 backend/tracking/*/__pycache__/*
 backend/tracking/Impr_Assoc_Track/__pycache__/*
 backend/tracking/Impr_Assoc_Track/__pycache__/__pycache__/*
+
 # vidoes and outputs
+*.mp4
 input_videos/*
 output_dir/*
 # TensorRT Models
 *.engine
+
+# electron dependancies
+node_modules
 
 backend/tracking/*.nsys-rep
 backend/tracking/*.sqlite
