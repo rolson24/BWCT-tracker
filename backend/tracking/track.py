@@ -441,7 +441,9 @@ if __name__ == "__main__":
    
 
   # create instance of BoxAnnotator
-  box_annotator = sv.BoxAnnotator(thickness=1, text_thickness=2, text_scale=1)
+  # box_annotator = sv.BoxAnnotator(thickness=1, text_thickness=2, text_scale=1)
+  box_annotator = sv.BoundingBoxAnnotator(thickness=1)
+  label_anntator = sv.LabelAnnotator(text_scale=1, text_thickness=2)
 
   # create instance of TraceAnnotator
   trace_annotator = sv.TraceAnnotator(thickness=1, trace_length=300)
@@ -657,8 +659,12 @@ if __name__ == "__main__":
  
     annotated_frame=box_annotator.annotate(
       scene=annotated_frame,
-      detections=detections,
-      labels=labels)
+      detections=detections)
+    annotated_frame=label_anntator.annotate(
+       scene=annotated_frame,
+       detections=detections,
+       labels=labels
+    )
     for line_zone in line_zones:
       annotated_frame = line_zone_annotator.annotate(annotated_frame, line_counter=line_zone)
 
