@@ -483,12 +483,13 @@ def process_video(filename, save_video):
     tracker_base_path = "backend/tracking"
     script_path = f"{tracker_base_path}/track.py"
     output_path = "backend/static/outputs/"
+    device = "cpu"
     try:
         import tensorrt
         model_path = f"{tracker_base_path}/tracking/models/yolov8s-2024-02-14-best_fp16_trt.engine"
+        device = "cuda:0"
     except ImportError:
         model_path = f"{tracker_base_path}/models/best.onnx"
-
     cc_source_path = f"{tracker_base_path}/reference-image-test.jpg"
     day_night_path = "static/day_night.csv"
     # model_path = "../tracking/models/yolov8s-2024-02-14-best_fp16_trt.engine"
@@ -513,7 +514,7 @@ def process_video(filename, save_video):
                     # "--color_calib_enable",
                     "--color_source_path", cc_source_path,
                     "--color_calib_device", "cpu",
-                    "--device", "cpu",
+                    "--device", device,
                     # "--day_night_switch_file", day_night_path,
                     "--object_tracker", tracker
                 ],
@@ -534,7 +535,7 @@ def process_video(filename, save_video):
                     # "--color_calib_enable",
                     "--color_source_path", cc_source_path,
                     "--color_calib_device", "cpu",
-                    "--device", "cpu",
+                    "--device", device,
                     # "--day_night_switch_file", day_night_path,
                     "--object_tracker", tracker
 

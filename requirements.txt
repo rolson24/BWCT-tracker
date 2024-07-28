@@ -38,5 +38,5 @@ scikit-learn
 kaleido
 # cupy==13.0.0
 # faiss-gpu
-
+# boxmot
 

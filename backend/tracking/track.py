@@ -33,7 +33,11 @@ from typing import Callable, Generator, Optional, Tuple, Iterable
 from ConfTrack.ConfTrack import ConfTrack
 from supervision import ByteTrack
 
-from boxmot import ImprAssocTrack
+try: 
+  from boxmot import ImprAssocTrack
+except ImportError:
+  from Impr_Assoc_Track.Impr_Assoc_Track import ImprAssocTrack
+
 # import super_gradients as sg
 
 from ultralytics import YOLO, NAS
