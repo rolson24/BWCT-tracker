@@ -486,7 +486,7 @@ def process_video(filename, save_video):
     device = "cpu"
     try:
         import tensorrt
-        model_path = f"{tracker_base_path}/tracking/models/yolov8s-2024-02-14-best_fp16_trt.engine"
+        model_path = f"{tracker_base_path}/models/yolov8s-2024-02-16-best_fp16_trt.engine"
         device = "cuda:0"
     except ImportError:
         model_path = f"{tracker_base_path}/models/best.onnx"
